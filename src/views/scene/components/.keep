@@ -1,0 +1,9 @@
+### Descripion folder ###
+*** Folder that contains all dumb components (components without business logic) specific of the current scene 
+File name structure:
+PascalCase
+RouteNestedroute.js ***
+···Examples:
+    DataTable.js
+    SubHeader.js
+    Carousel.js
