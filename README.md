@@ -1,6 +1,6 @@
 # React seed - Francisco Castillo
 
-## Project architecture made by Francisco Castillo
+### `React, Eslint, Prettier, Docker multistage, path alias, Husky, helpers, own architecture and more`
 
 ## Available Scripts
 
