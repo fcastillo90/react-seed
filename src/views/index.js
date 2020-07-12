@@ -5,7 +5,7 @@ import SceneRoutes from './scene'
 
 const Components = () => {
   return (
-    <Router basename="/beta">
+    <Router>
       <Switch>
         <Route component={SceneRoutes} />
       </Switch>
