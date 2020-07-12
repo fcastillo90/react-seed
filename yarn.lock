@@ -9094,11 +9094,6 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
-react-app-rewire-eslint@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/react-app-rewire-eslint/-/react-app-rewire-eslint-0.2.3.tgz#88e93d74569c33fe22185d46f6a2b521c4dd7fb6"
-  integrity sha512-BRSpZw+oHNLE4Hdq+L+b7HOrfPJSlsrtzun8FMP9vcg/m6vv4PV97VBxECkjqIPWExzJLi6kbcizcKTwTaaWNA==
-
 react-app-rewired@^2.1.6:
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/react-app-rewired/-/react-app-rewired-2.1.6.tgz#33ee3076a7f34d6a7c94e649cac67e7c8c580de8"
