@@ -42,12 +42,12 @@
     "**/*.{js,jsx}": [
       "prettier --write",
       "git add",
-      "npm run lint-staged:js"
+      "yarn run lint-staged:js"
     ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint-staged"
+      "pre-commit": "yarn run lint-staged"
     }
   },
   "devDependencies": {
