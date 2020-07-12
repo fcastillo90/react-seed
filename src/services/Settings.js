@@ -9,7 +9,7 @@ export default {
     apiUrl: process.env.REACT_APP_API_URL,
   },
   path: {
-    path: `path`,
+    apiPath: `path`,
     composedPath: (parameter) => `path/${parameter}`,
   },
   buildUrl: (

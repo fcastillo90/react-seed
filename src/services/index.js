@@ -1,13 +1,14 @@
+/* eslint-disable no-unused-vars */
 import axios from 'axios'
-/* eslint-disable no-param-reassign */
-export const getFromApi = async (
+
+export const getFromApi = async ({
   url = null,
   onSuccess = null,
   onError = () => {},
   onPending = () => {},
   token = '',
   type = '',
-) => {
+}) => {
   if (url == null || url === '' || onSuccess == null || typeof onSuccess !== 'function') {
     throw new Error("url and onSuccess can't be null or empty")
   }
@@ -17,13 +18,8 @@ export const getFromApi = async (
     case 'download':
       headers = { 'Content-Disposition': 'attachment' }
       break
-    case 'recovery':
-      headers = {}
-      break
     default:
-      headers = {
-        Authorization: `Bearer ${token}`,
-      }
+      headers = {}
       break
   }
   return axios
@@ -55,45 +51,32 @@ export const getFromApi = async (
  * @param {string} type
  * @returns {Promise<any>} Fulfills after the request succeeds or fails.
  */
-export const postToApi = async (
-  json = {},
+export const postToApi = async ({
+  body = {},
   url = null,
   onSuccess = null,
   onError = () => {},
   onPending = () => {},
   token = '',
   type = '',
-) => {
+}) => {
   if (url == null || url === '' || onSuccess == null || typeof onSuccess !== 'function') {
     throw new Error("url and onSuccess can't be null or empty")
   }
   let headers
-  let jsonString = ''
   await onPending()
-  if (type.includes('application') || type.includes('image')) {
-    headers = {
-      'Content-Type': `${type}`,
-      'Content-Disposition': `attachment; filename=${json.name}`,
-    }
-    jsonString = json
-  } else {
-    switch (type) {
-      case 'plain':
-        headers = {
-          Authorization: `Bearer ${token}`,
-        }
-        jsonString = json
-        break
-      default:
-        headers = {
-          Authorization: `Bearer ${token}`,
-        }
-        jsonString = JSON.stringify(json)
-    }
+  switch (type) {
+    case 'plain':
+      headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+      }
+      break
+    default:
+      headers = {}
   }
 
   return axios
-    .post(url, jsonString, { headers })
+    .post(url, body, { headers })
     .then((response) => {
       const { status, data } = response
       if (response.statusText) {
@@ -116,44 +99,31 @@ export const postToApi = async (
  * @param {string} type
  * @returns {Promise<any>} Fulfills after the request succeeds or fails.
  */
-export const patchToApi = async (
-  json = {},
+export const patchToApi = async ({
+  body = {},
   url = null,
   onSuccess = null,
   onError = () => {},
   onPending = () => {},
   token = '',
   type = '',
-) => {
+}) => {
   if (url == null || url === '' || onSuccess == null || typeof onSuccess !== 'function') {
     throw new Error("url and onSuccess can't be null or empty")
   }
   let headers
-  let jsonString = ''
   await onPending()
-  if (type.includes('application') || type.includes('image')) {
-    headers = {
-      'Content-Type': `${type}`,
-      'Content-Disposition': `attachment; filename=${json.name}`,
-    }
-    jsonString = json
-  } else {
-    switch (type) {
-      case 'schedule':
-        headers = {
-          Authorization: `Bearer ${token}`,
-        }
-        jsonString = json
-        break
-      default:
-        headers = {
-          Authorization: `Bearer ${token}`,
-        }
-        jsonString = JSON.stringify(json)
-    }
+  switch (type) {
+    case 'plain':
+      headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+      }
+      break
+    default:
+      headers = {}
   }
   return axios
-    .patch(url, jsonString, { headers })
+    .patch(url, body, { headers })
     .then((response) => {
       const { status, data } = response
       if (response.statusText) {
@@ -179,39 +149,32 @@ export const patchToApi = async (
  * @param {function} onPending Callback without arguments to call before starting the request.
  * @returns {Promise<any>} Fulfills after the request succeeds or fails.
  */
-export const putToApi = (
-  json = {},
+export const putToApi = ({
+  body = {},
   url = null,
   onSuccess = null,
   onError = () => {},
   onPending = () => {},
   token = '',
   type = 'request',
-) => {
+}) => {
   if (url == null || url === '' || onSuccess == null || typeof onSuccess !== 'function') {
     throw new Error("url and onSuccess can't be null or empty")
   }
-  let headers = {}
-  let jsonString = ''
+  let headers
   switch (type) {
-    case 'request':
+    case 'plain':
       headers = {
         'Content-Type': 'application/json; charset=utf-8',
-        Authorization: `Bearer ${token}`,
       }
-      jsonString = JSON.stringify(json)
       break
     default:
-      headers = {
-        'Content-Type': 'application/json; charset=utf-8',
-      }
-      jsonString = JSON.stringify(json)
+      headers = {}
   }
   onPending()
-  // noinspection JSCheckFunctionSignatures -- WebStorm misses the argument's type
   return fetch(url, {
     method: 'PUT',
-    body: jsonString,
+    body,
     redirect: 'error',
     headers,
   })
@@ -219,6 +182,7 @@ export const putToApi = (
       return response.text().then((text) => {
         const { status } = response
         if (text) {
+          // eslint-disable-next-line no-param-reassign
           text = JSON.parse(text)
         }
         if (response.ok) {
@@ -243,14 +207,14 @@ export const putToApi = (
  * @param {function} onPending Callback without arguments to call before starting the request.
  * @returns {Promise<any>} Fulfills after the request succeeds or fails.
  */
-export const deleteToApi = (
+export const deleteToApi = ({
   url = null,
   onSuccess = null,
   onError = () => {},
   onPending = () => {},
   token = '',
   type = 'delete',
-) => {
+}) => {
   if (url == null || url === '' || onSuccess == null || typeof onSuccess !== 'function') {
     throw new Error("url and onSuccess can't be null or empty")
   }
@@ -267,7 +231,6 @@ export const deleteToApi = (
   }
 
   onPending()
-  // noinspection JSCheckFunctionSignatures -- WebStorm misses the argument's type
   return fetch(url, {
     method: 'DELETE',
     redirect: 'error',
@@ -277,6 +240,7 @@ export const deleteToApi = (
       return response.text().then((text) => {
         const { status } = response
         if (text) {
+          // eslint-disable-next-line no-param-reassign
           text = JSON.parse(text)
         }
         if (response.ok) {
